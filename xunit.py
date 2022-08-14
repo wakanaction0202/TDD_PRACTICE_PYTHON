@@ -3,31 +3,30 @@ class TestCase:
         self.name = name
     def setUp(self):
         pass
+    def tearDown(self):
+        pass
     def run(self):
         self.setUp()
         method = getattr(self, self.name)
         method()
+        self.tearDown()
 
 class WasRun(TestCase):
     def setUp(self):
-        self.wasRun = None
-        self.wasSetUp = 1
         self.log = "setUp "
     def testMethod(self):
-        self.wasRun = 1
+        self.log = self.log + "testMethod "
+    def tearDown(self):
+        self.log = self.log + "tearDown "
 
 class TestCaseTest(TestCase):
     def setUp(self):
         self.test = WasRun("testMethod")
-    def testRunning(self):
+    def testTemplateMethod(self):
         self.test.run()
-        assert("setUp " == self.test.log)
-    def testSetUp(self):
-        self.test.run()
-        assert(self.test.wasSetUp)
+        assert("setUp testMethod tearDown " == self.test.log)
 
-TestCaseTest("testRunning").run()
-TestCaseTest("testSetUp").run()
+TestCaseTest("testTemplateMethod").run()
 
 # [x]テストメソッドを呼び出す
 # [x]setUpを最初に呼び出す
@@ -35,4 +34,4 @@ TestCaseTest("testSetUp").run()
 # [ ]テストメソッドが失敗したとしてもtearDown()を呼び出す
 # [ ]複数のテストを走らせる
 # [ ]収集してテスト結果を出力する
-# [ ]wasRunでは文字列をログに記録する
+# [x]wasRunでは文字列をログに記録する
