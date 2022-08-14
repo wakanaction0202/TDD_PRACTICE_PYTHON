@@ -12,6 +12,7 @@ class WasRun(TestCase):
     def setUp(self):
         self.wasRun = None
         self.wasSetUp = 1
+        self.log = "setUp "
     def testMethod(self):
         self.wasRun = 1
 
@@ -20,7 +21,7 @@ class TestCaseTest(TestCase):
         self.test = WasRun("testMethod")
     def testRunning(self):
         self.test.run()
-        assert(self.test.wasRun)
+        assert("setUp " == self.test.log)
     def testSetUp(self):
         self.test.run()
         assert(self.test.wasSetUp)
@@ -34,3 +35,4 @@ TestCaseTest("testSetUp").run()
 # [ ]テストメソッドが失敗したとしてもtearDown()を呼び出す
 # [ ]複数のテストを走らせる
 # [ ]収集してテスト結果を出力する
+# [ ]wasRunでは文字列をログに記録する
