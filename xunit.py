@@ -27,6 +27,8 @@ class WasRun(TestCase):
         self.log = "setUp "
     def testMethod(self):
         self.log = self.log + "testMethod "
+    def testBrokenMethod(self):
+        raise Exception
     def tearDown(self):
         self.log = self.log + "tearDown "
 
@@ -40,15 +42,22 @@ class TestCaseTest(TestCase):
         test = WasRun("testMethod")
         result = test.run()
         assert("1 run, 0 failed" == result.summary())
+    def testFailedResult(self):
+        test = WasRun("testBrokenMethod")
+        result = test.run()
+        assert("1 run, 1 failed" == result.summary())        
+
 
 TestCaseTest("testTemplateMethod").run()
 TestCaseTest("testResult").run()
+# TestCaseTest("testFailedResult").run()
 
 
 # [x]テストメソッドを呼び出す
 # [x]setUpを最初に呼び出す
-# [ ]tearDownを後で呼び出す
+# [x]tearDownを後で呼び出す
 # [ ]テストメソッドが失敗したとしてもtearDown()を呼び出す
 # [ ]複数のテストを走らせる
-# [ ]収集してテスト結果を出力する
+# [x]収集してテスト結果を出力する
 # [x]wasRunでは文字列をログに記録する
+# [ ]失敗したテストを出力する
